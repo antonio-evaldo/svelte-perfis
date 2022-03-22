@@ -2,6 +2,13 @@
   import type IUsuario from '../interfaces/IUsuario';
   import BarraSuperior from './BarraSuperior.svelte';
   export let usuario: IUsuario;
+
+  let temRepositorios: boolean;
+
+  $: {
+    temRepositorios = Boolean(usuario.repositorios_recentes.length);
+    console.log(temRepositorios);
+  }
 </script>
 
 <div class="card-usuario">
@@ -33,6 +40,27 @@
         Repositórios: <span>{usuario.repositorios_publicos}</span>
       </div>
     </div>
+
+    {#if temRepositorios}
+      <div class="repositorios">
+        <h2 class="titulo">Repositórios Recentes:</h2>
+
+        <ul>
+          {#each usuario.repositorios_recentes as repositorio}
+            <li>
+              <a
+                href={repositorio.url}
+                target="_blank"
+                rel="noopener"
+                class="repositorio"
+              >
+                {repositorio.nome}
+              </a>
+            </li>
+          {/each}
+        </ul>
+      </div>
+    {/if}
   </div>
 </div>
 
@@ -41,7 +69,7 @@
     margin-top: 65px;
   }
   .usuario {
-    padding: 28px 0;
+    padding: 28px 10px;
     background: rgba(255, 255, 255, 0.5);
     box-shadow: -12px 37px 45px rgba(133, 127, 201, 0.18);
     border-radius: 0px 0px 13px 13px;
@@ -70,5 +98,17 @@
   .detalhes-usuario > .info > span {
     color: #6781a8;
     font-weight: normal;
+  }
+  .repositorios > .titulo {
+    font-size: 20px;
+    line-height: 31px;
+    font-weight: 600;
+    color: #395278;
+  }
+  .repositorio {
+    font-size: 20px;
+    line-height: 31px;
+    color: #6781a8;
+    transition: color 0.2s;
   }
 </style> 
